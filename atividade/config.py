@@ -4,4 +4,5 @@ def create_app():
     app = Flask(__name__)
     app.config['DEBUG'] = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///atividade.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     return app

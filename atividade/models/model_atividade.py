@@ -1,5 +1,6 @@
 from ..database import db
 import json
+from sqlalchemy import types
 
 class AtividadeNaoEncontrada(Exception):
     pass
@@ -10,7 +11,7 @@ class Atividade(db.Model):
    id = db.Column(db.Integer, primary_key=True)
    id_turma = db.Column(db.Integer,nullable=False)
    enunciado = db.Column(db.String,nullable=False)
-   respostas = db.Column(db.Text,nullable=False)
+   respostas = db.Column(types.JSON,nullable=False)
 
    def __init__(self,id,id_turma,enunciado,respostas):
       self.id = id
@@ -19,10 +20,10 @@ class Atividade(db.Model):
       self.respostas = respostas
 
    @property
-   def respostas(self):
+   def respostas_json(self):
       return json.loads(self.respostas)
    
-   @respostas.setter
+   @respostas_json.setter
    def respostas(self,lista):
       self.respostas = json.dumps(lista)
 
@@ -48,19 +49,21 @@ def criar_atividade(dados):
 
 def atualizar_atividade(id,novos_dados):
     atividade = Atividade.query.get(id)
-    if atividade:
-        atividade.id = novos_dados['id']
-        atividade.id_turma = novos_dados['id_turma']
-        atividade.enunciado = novos_dados['enunciado']
-        atividade.respostas = novos_dados['respostas']
-        db.session.commit()
-        return {'Mensagem':'Atividade atualizada'}       
-    raise AtividadeNaoEncontrada
+    if not atividade:
+        raise AtividadeNaoEncontrada
+    atividade.id = novos_dados['id']
+    atividade.id_turma = novos_dados['id_turma']
+    atividade.enunciado = novos_dados['enunciado']
+    atividade.respostas = novos_dados['respostas']
+    db.session.commit()
+    return {'Mensagem':'Atividade atualizada'}       
+   
 
 def excluir_atividade(id):
    atividade = Atividade.query.get(id)
-   if atividade:
-      db.session.delete(atividade)
-      db.session.commit()
-      return {"Mensagem":'Atividade deletada!!'}
-   raise AtividadeNaoEncontrada
+   if not atividade:
+      raise AtividadeNaoEncontrada
+   db.session.delete(atividade)
+   db.session.commit()
+   return {"Mensagem":'Atividade deletada!!'}
+   

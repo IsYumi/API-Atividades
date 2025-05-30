@@ -38,7 +38,7 @@ def criar_nova_atividade():
       return ({'Mensagem':'Erro na criação'}),500
    
 @atividade_bp.route('/<int:id_atividade>',methods=['PUT'])
-def atualizar_atividade(id_atividade):
+def atualizar_atividade_rota(id_atividade):
    try:
       data_updated = request.get_json()
       if data_updated is None:

@@ -1,5 +1,5 @@
 from flask import Blueprint,jsonify,request
-from ...atividade.models.model_atividade import (obter_atividade,listar_atividades,atualizar_atividade,excluir_atividade,criar_atividade,AtividadeNaoEncontrada)
+from ..models.model_atividade import (obter_atividade,listar_atividades,atualizar_atividade,excluir_atividade,criar_atividade,AtividadeNaoEncontrada)
 from ..clientes.pessoa_service_client import PessoaService
 
 atividade_bp = Blueprint('atividade_bp',__name__)
@@ -27,6 +27,7 @@ def obter_atividade_para_professor(id_atividade,id_professor):
     except AtividadeNaoEncontrada:
        return jsonify({'Erro':'Atividade não encontrada!'}),404
     
+
 @atividade_bp.route('/',methods=['POST'])
 def criar_nova_atividade():
    try:

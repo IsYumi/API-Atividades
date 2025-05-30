@@ -1,6 +1,6 @@
 from config import create_app
 from controllers.pessoa_controller import pessoa_bp
-from database import db
+from database.database import db
 
 app = create_app()
 db.init_app(app)

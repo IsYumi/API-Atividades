@@ -9,7 +9,7 @@ class Atividade(db.Model):
    id = db.Column(db.Integer, primary_key=True)
    id_turma = db.Column(db.Integer,nullable=False)
    enunciado = db.Column(db.String,nullable=False)
-   respostas = db.Column(db.String,nullable=False)
+   respostas = db.Column(db.ARRAY(db.String),nullable=False)
 
    def __init__(self,id,id_turma,enunciado,respostas):
       self.id = id

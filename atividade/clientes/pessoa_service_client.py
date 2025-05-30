@@ -14,3 +14,14 @@ class PessoaService:
         except r.RequestException as erro:
             print(f'Erro ao acessar pessoa_service : {erro}')
             return False
+        
+    @staticmethod
+    def obter_docente_id(id_docente):
+        url = f'{url_pessoa_service}/docente/{id_docente}'
+        try:
+            response = r.get(url)
+            response.raise_for_status()
+            return response.json()
+        except r.exceptions.RequestException as e:
+            print(f'Erro ao procurar docente com id {id_docente}: {e}')
+            return None

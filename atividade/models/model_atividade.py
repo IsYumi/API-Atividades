@@ -33,16 +33,18 @@ def obter_atividade(id):
 
 def criar_atividade(dados):
    activits.append(dados)
+   return dados
 
 def atualizar_atividade(id,novos_dados):
-    for act in activits:
-        if act['id'] == id:
-            activity = obter_atividade(id)
-            activity.update(novos_dados)
+    for i,act in enumerate(activits):
+        if act.get['id'] == id:
+            act.update(novos_dados)
+            return act
     raise AtividadeNaoEncontrada
 
 def excluir_atividade(id):
-   for act in activits:
-      if act['id'] == id:
-         del act
+   for i,act in enumerate(activits):
+      if act.get['id'] == id:
+         del activits[i]
+         return True
    raise AtividadeNaoEncontrada

@@ -1,6 +1,6 @@
 import requests as r
 
-url_pessoa_service = ''
+url_pessoa_service = 'http://127.0.0.1:5000/api/docentes'
 
 class PessoaService:
     @staticmethod

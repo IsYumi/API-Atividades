@@ -40,20 +40,21 @@ def criar_nova_atividade():
 def atualizar_atividade(id_atividade):
    try:
       data_updated = request.get_json()
+      if data_updated is None:
+         return jsonify({'Mensagem':'JSON inválido ou ausentes'}),400
       activity_update =  model_atividade.atualizar_atividade(id_atividade,data_updated)
-      if activity_update:
-         return jsonify(activity_update),200
-      else:
-         return jsonify({'Mensagem':'Atividade não encontrada para ser atualizada!'}),404
+      
+      return jsonify(activity_update),200
+   
    except model_atividade.AtividadeNaoEncontrada as e:
       return jsonify({'Mensagem':f'Erro de ao atualizar: {e}'}),500
    
 @atividade_bp.route('/<int:id_atividade>',methods=['DELETE'])
-def deletar_atividade(id):
+def remover_atividade(id_atividade):
    try:
-      if model_atividade.excluir_atividade(id):
+      if model_atividade.excluir_atividade(id_atividade):
          return jsonify({'Mensagem':'Atividade deletada!!'}),204
-      else:
+   except model_atividade.AtividadeNaoEncontrada:
          return jsonify({'Mensagem':'Atividade não encontrada para ser deletada!'}),404
-   except model_atividade.AtividadeNaoEncontrada as e:
-      return jsonify({'Mensagem':f'Erro ao deletar : {e}'}),500
+   except Exception  as e:
+      return jsonify({'Mensagem':f'Erro ao deletar : {str(e)}'}),500

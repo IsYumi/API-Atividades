@@ -10,7 +10,7 @@ API para Atividades do Projeto Gestão Escolar
 ## Sobre o projeto📕
 Esta API tem como objetivo gerenciar informações de Professores, Alunos, Disciplinas e suas relações. Permite criar, consultar, atualizar e deletar registros, além de controlar a vinculação de alunos e professores às disciplinas
 
-##Estrutura do Projeto📄
+## Estrutura do Projeto📄
 ```
 ├── API-ATIVIDADES/
 │   ├── atividade/

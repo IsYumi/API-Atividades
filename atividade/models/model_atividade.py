@@ -1,50 +1,57 @@
-activits = [
-    {
-        'id':1,
-        'id_turma':101,
-        'enunciado':'O que são planícies?',
-        'respostas':[
-            {'id_aluno':1,'resposta':'foto_resposta.png','nota':10},
-            {'id_aluno':2,'resposta':'foto_resposta.png','nota':8.5}
-        ]
-},
-    {
-        'id':2,
-        'id_turma':102,
-        'enunciado':'Qual a diferença de figuras de linguagem e funções de linguagem?',
-        'respostas':[
-            {'id_aluno':1,'resposta':'resposta_linguagens.png','nota':7}
-        ]
-    }
-]
+from ..database import db
 
 class AtividadeNaoEncontrada(Exception):
     pass
 
+class Atividade(db.Model):
+   __tablename__ = 'atividade'
+
+   id = db.Column(db.Integer, primary_key=True)
+   id_turma = db.Column(db.Integer,nullable=False)
+   enunciado = db.Column(db.String,nullable=False)
+   respostas = db.Column(db.String,nullable=False)
+
+   def __init__(self,id,id_turma,enunciado,respostas):
+      self.id = id
+      self.id_turma = id_turma
+      self.enunciado = enunciado
+      self.respostas = respostas
+
+   def to_dict(self):
+    return {'id':self.id,'id_turma':self.id_turma,'enunciado':self.enunciado,'respostas':self.respostas}
+
 def listar_atividades():
-    return activits
+    atividades = Atividade.query.all()
+    return [atividade.to_dict() for atividade in atividades]
 
 def obter_atividade(id):
-  for act in activits:
-     if act['id'] == id:
-        return act
-  raise AtividadeNaoEncontrada
+  atividade = Atividade.query.get(id)
+  if not atividade:
+        raise AtividadeNaoEncontrada
+  return atividade.to_dict()
 
 
 def criar_atividade(dados):
-   activits.append(dados)
-   return dados
+   nova_atividade = Atividade(id=dados['id'],id_turma=dados['id_turma'],enunciado=dados['enunciado'],respostas=dados['respostas'])
+   db.session.add(nova_atividade)
+   db.session.commit()
+   return {'Mensagem':'Atividade adicionada!!'},201
 
 def atualizar_atividade(id,novos_dados):
-    for i,act in enumerate(activits):
-        if act.get['id'] == id:
-            act.update(novos_dados)
-            return act
+    atividade = Atividade.query.get(id)
+    if atividade:
+        atividade.id = novos_dados['id']
+        atividade.id_turma = novos_dados['id_turma']
+        atividade.enunciado = novos_dados['enunciado']
+        atividade.respostas = novos_dados['respostas']
+        db.session.commit()
+        return {'Mensagem':'Atividade atualizada'}       
     raise AtividadeNaoEncontrada
 
 def excluir_atividade(id):
-   for i,act in enumerate(activits):
-      if act.get['id'] == id:
-         del activits[i]
-         return True
+   atividade = Atividade.query.get(id)
+   if atividade:
+      db.session.delete(atividade)
+      db.session.commit()
+      return {"Mensagem":'Atividade deletada!!'}
    raise AtividadeNaoEncontrada

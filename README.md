@@ -30,6 +30,7 @@ Esta API tem como objetivo gerenciar informações de Professores, Alunos, Disci
 │   │   ├── controllers/
 │   │   ├── database/
 │   │   │   └── database.py
+|   |   |---dockerfile
 │   │   ├── model/
 │   │   │   └── model.py
 │   │   ├── app.py

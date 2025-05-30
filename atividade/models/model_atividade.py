@@ -1,4 +1,5 @@
 from ..database import db
+import json
 
 class AtividadeNaoEncontrada(Exception):
     pass
@@ -9,13 +10,21 @@ class Atividade(db.Model):
    id = db.Column(db.Integer, primary_key=True)
    id_turma = db.Column(db.Integer,nullable=False)
    enunciado = db.Column(db.String,nullable=False)
-   respostas = db.Column(db.ARRAY(db.String),nullable=False)
+   respostas = db.Column(db.Text,nullable=False)
 
    def __init__(self,id,id_turma,enunciado,respostas):
       self.id = id
       self.id_turma = id_turma
       self.enunciado = enunciado
       self.respostas = respostas
+
+   @property
+   def respostas(self):
+      return json.loads(self.respostas)
+   
+   @respostas.setter
+   def respostas(self,lista):
+      self.respostas = json.dumps(lista)
 
    def to_dict(self):
     return {'id':self.id,'id_turma':self.id_turma,'enunciado':self.enunciado,'respostas':self.respostas}
